@@ -119,13 +119,16 @@ underneath it, **flag it** (see Escalation below) — don't write one yourself.
 **Step 6 — Update / publish**
 Save/publish the page in Elementor.
 
-**Step 7 — Purge cache**
-- WP Engine dashboard → your site → **Caching** → **Clear all caches**.
-- If the page looks off after publishing, also go to **Elementor → Tools →
-  Regenerate CSS & Data**.
+**Step 7 — Ask the Lead to purge cache**
+**Do not clear the WP Engine cache yourself.** "Clear all caches" is a site-wide
+action — it affects all ~800 pages, not just yours — so message the Project Lead
+when your page is published and ask them to purge it (or get their go-ahead
+before you do). Mention if the page looks off too, so they can also run
+**Elementor → Tools → Regenerate CSS & Data**.
 
-Skipping this step is the most common way to "finish" a page and then fail your
-own checks in Step 9 — you'd be looking at a cached, pre-fix version of the page.
+Don't skip getting the cache purged one way or another — it's the most common
+way to "finish" a page and then fail your own checks in Step 9, because you'd
+still be looking at a cached, pre-fix version of the page.
 
 **Step 8 — Confirm it actually landed**
 Open the live page in an **incognito window**, view source (not the Elementor
@@ -169,6 +172,8 @@ validator.schema.org and the live page.
   page you're working on.
 - **HTML widget only.** Text Editor and Shortcode widgets will escape or mangle
   the `<script>` tag.
+- **Never purge the WP Engine cache yourself.** It's a site-wide action — always
+  go through the Project Lead (see Step 7).
 - **Type JSON in a plain text editor**, never Google Docs (see Step 3 — silent
   curly-quote corruption).
 - **Strip HTML tags** out of every answer `text` value; **escape internal quotes**
@@ -187,7 +192,7 @@ validator.schema.org and the live page.
 - [ ] Answer `text` is plain text — no `<b>`, `<a>`, or other HTML tags inside it
 - [ ] Internal double quotes in answer text are escaped as `\"`
 - [ ] Didn't mark up promotional copy, testimonials, or non-Q&A content as "questions"
-- [ ] Cache purged (WP Engine +, if needed, Elementor regenerate)
+- [ ] Cache purge requested from the Lead (not done yourself) and confirmed complete
 - [ ] Viewed live page in incognito, view source confirms the script block is present
 - [ ] Ran validator.schema.org and got zero errors
 - [ ] Ran Rich Results Test, confirmed FAQ-eligible
