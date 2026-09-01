@@ -27,8 +27,8 @@ A page is done when **all** of the following are true:
 1. The page has one `FAQPage` JSON-LD block containing every visible FAQ Q&A pair.
 2. The question/answer text in the schema **matches the visible on-page text exactly**
    (no paraphrasing, no added/removed words).
-3. It passes Google's [Rich Results Test](https://search.google.com/test/rich-results)
-   with **zero errors** (warnings about eligibility are OK; hard errors are not).
+3. It passes [validator.schema.org](https://validator.schema.org/) with **zero
+   errors**, and every Q&A pair in the schema is confirmed visible on the live page.
 4. The tracker row is marked `Done` with the date and validator link.
 5. It no longer appears in the AI Readiness tool's "FAQ without schema" report on
    the next scan.
@@ -47,32 +47,39 @@ not real FAQ content` and notify the Lead. Do not force-fit schema onto content
 that isn't a question/answer.
 
 **Step 3 — Copy the exact visible text**
-For every Q&A pair on the page, copy the question and answer text **verbatim** —
-same wording, same punctuation. This is a hard Google requirement: schema text
-must match what a user actually sees.
+No copy needs rewriting. For every Q&A pair on the page, copy the question
+(heading) and answer text **verbatim** — same wording, same punctuation — straight
+from the live page into the template in Step 4. This is a hard Google requirement:
+schema text must match what a user actually sees. Note the question doesn't have
+to be phrased as a literal question ("How does X work?") — a heading like "Why
+Some Sellers Choose an As-Is Cash Sale" is a valid FAQ question for schema
+purposes as long as the answer text directly below it answers it.
 
 **Step 4 — Build the JSON-LD**
-Use this template. Add one `Question` object per Q&A pair on the page:
+Use this template. Set `@id` to the page's own URL + `#faq`, then add one
+`Question` object per Q&A pair already on the page — just wrap the existing
+heading and paragraph, don't rewrite either:
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": "https://www.example.com/this-exact-page-url/#faq",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Exact visible question text goes here",
+      "name": "Exact visible question/heading text goes here",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Exact visible answer text goes here. Plain text only — no HTML tags."
+        "text": "Paste the answer already on the page here. Plain text only — no HTML tags."
       }
     },
     {
       "@type": "Question",
-      "name": "Second question on the page",
+      "name": "Second question/heading on the page",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Second answer, again matching the visible text."
+        "text": "Paste that answer already on the page here too."
       }
     }
   ]
@@ -91,20 +98,29 @@ exists). Save as draft first if your CMS supports preview.
 ```
 
 **Step 6 — Validate**
-Run the live URL through **both**:
-- [Google Rich Results Test](https://search.google.com/test/rich-results) — confirm "FAQ" is detected with 0 errors.
-- [Schema Markup Validator](https://validator.schema.org/) — confirm no syntax errors.
+Don't use the AI Readiness tool for this — it crawls the whole ~800-page site, so
+it's too slow to re-check a single page as you finish it. Instead, per page:
 
-Screenshot or copy the result link.
+1. Go to [validator.schema.org](https://validator.schema.org/), paste in the live
+   page URL (or paste the JSON-LD directly), and confirm it comes back with
+   **zero errors**.
+2. **Visually confirm the FAQ is actually visible on the page** — open the live
+   URL and check that every question/answer you put in the JSON-LD is really
+   there, displayed to a normal visitor (not hidden, not removed, not behind a
+   login). Schema for content that isn't visibly on the page is invalid and can
+   get the page penalized — this check matters as much as the validator passing.
+
+Copy the validator.schema.org result link.
 
 **Step 7 — Publish and update the tracker**
 Publish the page. In the tracker, set `Status = Done`, fill in the date, paste the
 validator link, and put your initials in `Notes`.
 
 **Step 8 — Lead's weekly re-scan**
-Project Lead re-runs the AI Readiness tool weekly and confirms completed pages
-have dropped off the "FAQ without schema" report. Spot-check ~10% of "Done" rows
-against the live Rich Results Test.
+Project Lead re-runs the AI Readiness tool weekly (this full-site crawl is a Lead-only
+step, not per-page) and confirms completed pages have dropped off the "FAQ without
+schema" report. Spot-check ~10% of "Done" rows against validator.schema.org and the
+live page.
 
 ## 4. Common mistakes (QA checklist before marking Done)
 
@@ -112,7 +128,8 @@ against the live Rich Results Test.
 - [ ] Only **one** `FAQPage` block per page (don't stack duplicates)
 - [ ] Answer `text` is plain text — no `<b>`, `<a>`, or other HTML tags inside it
 - [ ] Didn't mark up promotional copy, testimonials, or non-Q&A content as "questions"
-- [ ] Ran both validators and got zero hard errors
+- [ ] Ran validator.schema.org and got zero errors
+- [ ] Opened the live page and visually confirmed every Q&A pair in the schema is actually displayed there
 - [ ] Page still displays normally to users (schema is invisible markup — nothing on the visible page should change)
 
 ## 5. Escalation
