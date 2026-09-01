@@ -1,4 +1,6 @@
-URL,Assigned To,Status,FAQ Pairs Count,Schema Added Date,Cache Purged (Y/N),Schema Validator Link,Rich Results Screenshot Link,Notes
-https://example.com/page-1,,Not Started,,,,,,
-https://example.com/page-2,,Not Started,,,,,,
-https://example.com/page-3,,Not Started,,,,,,
+Date,Assigned,Site (FAQPage),Progress,Issue
+8/28/26,Christine,http://how-to-price-your-home-to-sell/,done,
+8/28/26,Christine,https://importance-of-location-in-real-estate/,done,
+8/31/26,Christine,https://exterior-home-inspection-checklist/,done,Duplicate Article schema
+9/1/26,Christine,https://cash-buyer-vs-realtor-which-is-right-for-you/,done,
+,Christine,https://should-i-hire-a-mortgage-broker/,ongoing,

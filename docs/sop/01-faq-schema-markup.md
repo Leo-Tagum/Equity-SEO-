@@ -7,7 +7,7 @@
 | **Tech stack** | WordPress + Elementor, hosted on WP Engine |
 | **Owner (assigns work, unblocks issues)** | Project Lead |
 | **Executors** | Team members (assigned a batch of URLs each) |
-| **Tracker** | Google Sheet — see [`faq-schema-tracker-template.csv`](./faq-schema-tracker-template.csv) for the columns to set up (this *is* the ticket; there's no separate ticketing tool) |
+| **Tracker** | [Live Google Sheet, `task` tab](https://docs.google.com/spreadsheets/d/1zy-ye4GGKH1xWCMS2Ie0l1yn9sOHRdtSgtzHuOs2sGM/edit?gid=0#gid=0) — SSO-restricted to the Twinhomebuyer org, your team already has access. This *is* the ticket; there's no separate ticketing tool. (See [`faq-schema-tracker-template.csv`](./faq-schema-tracker-template.csv) for a plain-text mirror of the same columns.) |
 
 ## 1. Why we're fixing this
 
@@ -31,25 +31,29 @@ A page is done when **all** of the following are true:
    (no paraphrasing, no added/removed words).
 3. It passes [validator.schema.org](https://validator.schema.org/) with **zero errors**.
 4. [Google's Rich Results Test](https://search.google.com/test/rich-results) shows
-   the page as FAQ-eligible, and a screenshot of that pass is saved.
+   the page as FAQ-eligible.
 5. Cache is purged (WP Engine + Elementor) and, viewed in an incognito window, the
    page's HTML source actually contains the script block.
-6. The tracker row (Google Sheet) is marked `Done` with both proof links and the date.
+6. **Only after all of the above pass**, the tracker row (`task` tab) is set to
+   `Progress = Done` with today's date — `Done` is the signal that every check
+   above already happened, not just that the schema was pasted in.
 7. It no longer appears in the AI Readiness tool's "FAQ without schema" report on
    the next scan.
 
 ## 3. Step-by-step (per page)
 
 **Step 1 — Get your assigned URLs**
-Pull your batch from the Google Sheet tracker (Lead assigns ~15–20 pages per
-person for 128 pages ÷ team size). Mark each row `In Progress` as you start it.
+Open the [`task` tab](https://docs.google.com/spreadsheets/d/1zy-ye4GGKH1xWCMS2Ie0l1yn9sOHRdtSgtzHuOs2sGM/edit?gid=0#gid=0)
+and find your section (rows are grouped by name). Pick the next row with no
+`Progress` set, and set `Progress = ongoing` as you start it.
 
 **Step 2 — Confirm it's genuinely FAQ content**
 Open the page. Confirm there are real, visible question-and-answer pairs (an
 "FAQ" section, an accordion, a Q&A block). If the page doesn't actually have
-Q&A-formatted content (false positive from the tool), mark the row `Blocked –
-not real FAQ content` and notify the Lead. Do not force-fit schema onto content
-that isn't a question/answer.
+Q&A-formatted content (false positive from the tool), leave `Progress` as-is
+(don't mark `Done`), note the reason in `Issue` (e.g. "not real FAQ content"),
+and notify the Lead. Do not force-fit schema onto content that isn't a
+question/answer.
 
 **Step 3 — Copy the exact visible text**
 No copy needs rewriting. For every Q&A pair on the page, copy the question
@@ -137,8 +141,9 @@ it's too slow to re-check a single page as you finish it. Instead, per page:
    page URL (or the JSON-LD directly), confirm **zero errors**. This is your fast
    self-check while you're still working.
 2. **[Google Rich Results Test](https://search.google.com/test/rich-results)** —
-   confirm the page shows as FAQ-eligible. Screenshot the pass — this is the
-   proof-of-work that goes in the tracker.
+   confirm the page shows as FAQ-eligible. Take a screenshot for your own
+   record — the tracker doesn't have a column for it, but keep it in case a
+   page gets questioned later.
 3. **Visually confirm the FAQ is actually visible on the page** — every
    question/answer you put in the JSON-LD needs to really be there, displayed to
    a normal visitor (not hidden, not removed, not behind a login). Schema for
@@ -146,9 +151,10 @@ it's too slow to re-check a single page as you finish it. Instead, per page:
    penalized — this check matters as much as the validators passing.
 
 **Step 10 — Update the tracker**
-In the Google Sheet, set `Status = Done`, fill in the date, paste the
-validator.schema.org link, paste the Rich Results Test screenshot link (upload to
-the shared Drive folder, paste that link), and put your initials in `Notes`.
+In the `task` tab, fill in today's `Date` and set `Progress = Done` — only once
+every check in Step 9 has actually passed. `Done` on its own is read as "this page
+is fully verified," so don't set it as a placeholder while something is still
+pending.
 
 **Step 11 — Lead's weekly re-scan**
 Project Lead re-runs the AI Readiness tool weekly (this full-site crawl is a
@@ -184,14 +190,14 @@ validator.schema.org and the live page.
 - [ ] Cache purged (WP Engine +, if needed, Elementor regenerate)
 - [ ] Viewed live page in incognito, view source confirms the script block is present
 - [ ] Ran validator.schema.org and got zero errors
-- [ ] Ran Rich Results Test, confirmed FAQ-eligible, screenshot saved
+- [ ] Ran Rich Results Test, confirmed FAQ-eligible
 - [ ] Opened the live page and visually confirmed every Q&A pair in the schema is actually displayed there
 - [ ] Page still displays normally to users (schema is invisible markup — nothing on the visible page should change)
 
 ## 6. Escalation
 
-If you hit any of these, stop and flag the row `Blocked` with a reason, then
-notify the Project Lead — don't guess:
+If you hit any of these, stop — leave `Progress` as-is (don't mark `Done`), note
+the reason in the `Issue` column, and notify the Project Lead directly. Don't guess:
 - The page isn't real FAQ content (tool false positive).
 - A question on the page has no answer text underneath it.
 - The page already has a *different* `FAQPage` (or conflicting) schema block on it.
